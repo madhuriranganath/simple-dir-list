@@ -2,7 +2,6 @@
 $db = mysqli_connect("localhost", "test", "", "task");
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
-    
     $response = [];
     $filename = $_FILES["uploadfile"]["name"];
     $tempname = $_FILES["uploadfile"]["tmp_name"];
@@ -56,9 +55,10 @@ $array = [];
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
+        $date = date_create($row["uploaded_at"]);
         $array[$row["id"]]['id'] = $row["id"];
         $array[$row["id"]]['filename'] = $row["filename"];
-        $array[$row["id"]]['uploaded_at'] = $row["uploaded_at"];
+        $array[$row["id"]]['uploaded_at'] = date_format($date, "Y/m/d H:i:s");
     }
 }
 // Deleting the uploaded file
@@ -82,7 +82,7 @@ if (isset($_POST['delete'])) {
 </head> 
   
 <body> 
-<?php include 'navbar.php';?>
+<?php include 'navbar.php'; ?>
 <div class="container mt-5">
     <div id="content"> 
         <?php if (!empty($response)) { ?>
@@ -95,7 +95,7 @@ if (isset($_POST['delete'])) {
         <?php
 } ?>
         <form method="POST" action="" enctype="multipart/form-data"> 
-            <div class="form-group">
+        <div class="form-group">
                 <input type="file" id="file" name="uploadfile" value="" accept=".txt,.doc,.docx,.pdf,.png,.jpeg,.jpg,.gif" class="form-control-file" /> 
             </div>
             <div class="form-group"> 
@@ -103,10 +103,19 @@ if (isset($_POST['delete'])) {
                   UPLOAD 
                 </button> 
             </div> 
-        </form> 
+        </form>
+        
     </div> 
 
-    
+    <div class="row">
+    <div class="col-md-3" >
+    <div class="input-group mb-3" style="float:right;">
+  <input type="text" class="form-control" placeholder="Search file" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+  </div>
+  </div>
+</div></div>
 
     <table class="table">
       <tr>

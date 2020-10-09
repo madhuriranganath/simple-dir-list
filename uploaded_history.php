@@ -24,9 +24,10 @@ $array = [];
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
+        $date=date_create($row["uploaded_at"]);
         $array[$row["id"]]['id'] = $row["id"];
         $array[$row["id"]]['filename'] = $row["filename"];
-        $array[$row["id"]]['uploaded_at'] = $row["uploaded_at"];
+        $array[$row["id"]]['uploaded_at'] = date_format($date,"Y/m/d H:i:s");
     }
 }
 ?> 

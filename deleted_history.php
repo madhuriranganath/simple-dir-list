@@ -26,8 +26,12 @@ $array = [];
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
+
+		$date=date_create($row["deleted_at"]);
         $array[$row["id"]]['id'] = $row["id"];
-        $array[$row["id"]]['filename'] = $row["filename"];
+		$array[$row["id"]]['filename'] = $row["filename"];
+        $array[$row["id"]]['deleted_at'] = date_format($date,"Y/m/d H:i:s");
+		
     }
 }
 ?> 
@@ -51,11 +55,12 @@ if ($result->num_rows > 0) {
 			foreach ($array as $key => $value) { ?>
 					<tr>
 						<td><?php echo $value['filename']; ?></td>
+						<td><?php echo $value['deleted_at']; ?></td>
 					</tr>
 					<?php
 			} }else { ?>
                 <tr>
-                <td colspan="1" class="text-center">No Records</td> </tr>
+                <td colspan="2" class="text-center">No Records</td> </tr>
              <?php
 } ?>
 		</table>
